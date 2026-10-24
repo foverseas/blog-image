@@ -1,0 +1,17 @@
+# Toutes les clés, avec leur valeur par défaut en commentaire.
+chapeau: "Mobile"
+titre: "Combien coûte une application mobile"
+sous-titre: "Les décisions qui font varier le devis"
+pied: "f-overseassolutions.fr"
+
+accent: "#00ff99"       # couleur d'accent
+fond: "#1c1c22"         # fond de la carte
+texte: "#ffffff"        # couleur du texte
+
+motif: particules       # particules | grille | aucun
+graine: 7               # change la disposition du motif
+police: "JetBrains Mono"
+
+nom: cout-application-mobile
+sortie: out
+formats: [16x9, 4x3, 1x1]
