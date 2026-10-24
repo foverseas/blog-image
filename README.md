@@ -19,7 +19,7 @@ $ blog-image image.yml
   -> article-1x1.png    1200x1200
 ```
 
-![Exemple de carte 16:9](docs/exemple-16x9.png)
+![Exemple de carte 16:9](https://raw.githubusercontent.com/foverseas/blog-image/v0.1.0/docs/exemple-16x9.png)
 
 Trois formats parce qu'un article en a besoin de trois : le 16:9 pour Open
 Graph et l'en-tête du billet, le 4:3 pour l'emplacement Discover, le 1:1 pour
@@ -148,6 +148,10 @@ $ uv run pytest
 Le rendu est reproductible : les mêmes descriptions donnent les mêmes fichiers,
 octet pour octet, d'une version de Pillow à l'autre. `uv.lock` est versionné
 pour que ce soit vrai d'une machine à l'autre aussi.
+
+## Journal des changements
+
+Voir [CHANGELOG.md](CHANGELOG.md).
 
 ## Licence
 

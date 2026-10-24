@@ -13,7 +13,7 @@ license-files = ["LICENSE"]
 authors = [{ name = "F-Overseas Solutions" }]
 keywords = ["blog", "cover-image", "og-image", "social-card", "pillow"]
 classifiers = [
-  "Development Status :: 4 - Beta",
+  "Development Status :: 3 - Alpha",
   "Environment :: Console",
   "Intended Audience :: Developers",
   "Programming Language :: Python :: 3 :: Only",
