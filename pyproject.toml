@@ -28,6 +28,7 @@ dev = ["pytest>=8.0", "ruff>=0.17"]
 Homepage = "https://github.com/foverseas/blog-image"
 Repository = "https://github.com/foverseas/blog-image"
 Issues = "https://github.com/foverseas/blog-image/issues"
+Discord = "https://discord.gg/FS2xqJ4QT6"
 
 [project.scripts]
 blog-image = "blog_image.cli:main"

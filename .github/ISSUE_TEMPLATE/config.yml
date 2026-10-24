@@ -1,5 +1,8 @@
 blank_issues_enabled: true
 contact_links:
+  - name: Discuter sur Discord
+    url: https://discord.gg/FS2xqJ4QT6
+    about: Le salon #blog-image du serveur F-Overseas Solutions — la réponse y arrive plus vite que dans une issue.
   - name: Question d'usage (Q&A)
     url: https://github.com/foverseas/blog-image/discussions/categories/q-a
     about: Comment choisir ses formats, une police qui ne se charge pas, un titre qui se coupe mal — une réponse marquée ici sert au suivant.

@@ -153,6 +153,13 @@ pour que ce soit vrai d'une machine à l'autre aussi.
 
 Voir [CHANGELOG.md](CHANGELOG.md).
 
+## Contact
+
+Une question d'usage, un titre qui se coupe mal, une idée de format : le
+[Discord](https://discord.gg/FS2xqJ4QT6) est le chemin le plus court. Les questions posées dans les
+[Discussions](https://github.com/foverseas/blog-image/discussions/categories/q-a) y gagnent une réponse qui
+reste trouvable, et les bugs vont dans les [issues](https://github.com/foverseas/blog-image/issues).
+
 ## Licence
 
 MIT.
