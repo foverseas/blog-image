@@ -1,0 +1,42 @@
+name: Publier sur PyPI
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      # L'authentification auprès de PyPI se fait par ce jeton OIDC,
+      # pas par un secret : il n'y a aucun token à stocker ici.
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v10.3.2
+        with:
+          python-version: "3.12"
+          enable-cache: true
+
+      # Un tag qui ne correspond pas à la version du paquet publierait un
+      # numéro inattendu, et PyPI n'accepte jamais deux fois la même version.
+      - name: Vérifier que le tag correspond à la version du paquet
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version="$(uv version --short)"
+          if [ "$tag" != "$version" ]; then
+            echo "::error::le tag $GITHUB_REF_NAME annonce $tag, pyproject.toml dit $version"
+            exit 1
+          fi
+
+      - name: Construire la distribution
+        run: uv build
+
+      - name: Vérifier les métadonnées
+        run: uvx twine check dist/*
+
+      - uses: pypa/gh-action-pypi-publish@v1.14.3
