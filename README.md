@@ -1,5 +1,7 @@
 # blog-image
 
+[![CI](https://github.com/foverseas/blog-image/actions/workflows/ci.yml/badge.svg)](https://github.com/foverseas/blog-image/actions/workflows/ci.yml)
+
 Génère les images de couverture d'un article dans plusieurs formats, à partir
 d'un fichier YAML de trois lignes.
 
