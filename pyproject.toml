@@ -22,7 +22,7 @@ classifiers = [
 dependencies = ["Pillow>=10.0", "PyYAML>=6.0"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0"]
+dev = ["pytest>=8.0", "ruff>=0.17"]
 
 [project.urls]
 Homepage = "https://f-overseassolutions.fr"
@@ -35,3 +35,13 @@ packages = ["blog_image"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM", "RUF"]
+# The ambiguous characters are deliberate: French typography sets a
+# non-breaking space before `?`, and `1600×900` is a size users type.
+ignore = ["RUF001"]

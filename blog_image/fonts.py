@@ -98,7 +98,9 @@ def resolve_fonts(spec_font: object) -> FontSet:
     if isinstance(spec_font, dict):
         missing = {"regular", "bold"} - set(spec_font)
         if missing:
-            raise FontError(f"police: a mapping needs both `regular` and `bold` (missing: {', '.join(sorted(missing))})")
+            raise FontError(
+                f"police: a mapping needs both `regular` and `bold` (missing: {', '.join(sorted(missing))})"
+            )
         regular, bold = _expand(str(spec_font["regular"])), _expand(str(spec_font["bold"]))
         for path in (regular, bold):
             if not path.is_file():
