@@ -36,7 +36,7 @@ Première version.
 - Le rendu est reproductible : les mêmes descriptions produisent les mêmes
   fichiers, octet pour octet, de Pillow 11.3 à Pillow 13.0.
 - 29 tests, exécutés en intégration continue sur Python 3.10, 3.12 et 3.14.
-- Le paquet n'est pas publié sur PyPI ; il s'installe depuis ce dépôt avec
-  `uv tool install git+https://github.com/foverseas/blog-image`.
+- Publié sur PyPI : `uv tool install blog-image`, ou
+  `uvx --from blog-image blog-image image.yml` sans rien installer de permanent.
 
 [0.1.0]: https://github.com/foverseas/blog-image/releases/tag/v0.1.0
