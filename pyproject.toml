@@ -25,7 +25,9 @@ dependencies = ["Pillow>=10.0", "PyYAML>=6.0"]
 dev = ["pytest>=8.0", "ruff>=0.17"]
 
 [project.urls]
-Homepage = "https://f-overseassolutions.fr"
+Homepage = "https://github.com/foverseas/blog-image"
+Repository = "https://github.com/foverseas/blog-image"
+Issues = "https://github.com/foverseas/blog-image/issues"
 
 [project.scripts]
 blog-image = "blog_image.cli:main"
