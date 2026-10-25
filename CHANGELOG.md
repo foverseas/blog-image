@@ -3,7 +3,7 @@
 Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 versionnage [SemVer](https://semver.org/lang/fr/).
 
-## [Non publié]
+## [0.2.0] - 2026-10-25
 
 ### Ajouté
 
@@ -73,4 +73,5 @@ Première version.
 - Publié sur PyPI : `uv tool install blog-image`, ou
   `uvx --from blog-image blog-image image.yml` sans rien installer de permanent.
 
+[0.2.0]: https://github.com/foverseas/blog-image/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/foverseas/blog-image/releases/tag/v0.1.0
