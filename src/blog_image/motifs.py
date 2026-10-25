@@ -13,12 +13,7 @@ from __future__ import annotations
 import math
 import random
 
-Box = tuple[float, float, float, float]
-Colour = tuple[int, int, int]
-
-
-def _rgba(colour: Colour, alpha: float) -> tuple[int, int, int, int]:
-    return (*colour, max(0, min(255, int(alpha))))
+from .colour import Box, Colour, rgba
 
 
 def particles(draw, box: Box, *, accent: Colour, foreground: Colour, seed: int, scale: float) -> None:
@@ -45,12 +40,12 @@ def particles(draw, box: Box, *, accent: Colour, foreground: Colour, seed: int, 
                 continue
             nearness = 1 - distance / reach
             rightness = 0.3 + 0.7 * ((ax + bx) / 2 - x0) / span
-            draw.line((ax, ay, bx, by), fill=_rgba(foreground, 72 * nearness * rightness), width=hairline)
+            draw.line((ax, ay, bx, by), fill=rgba(foreground, 72 * nearness * rightness), width=hairline)
 
     radius = max(1.5, scale * 0.0022)
     for x, y in points:
         alpha = 80 + 130 * ((x - x0) / span)
-        draw.ellipse((x - radius, y - radius, x + radius, y + radius), fill=_rgba(accent, alpha))
+        draw.ellipse((x - radius, y - radius, x + radius, y + radius), fill=rgba(accent, alpha))
 
 
 def grid(draw, box: Box, *, accent: Colour, foreground: Colour, seed: int, scale: float) -> None:
@@ -75,7 +70,7 @@ def grid(draw, box: Box, *, accent: Colour, foreground: Colour, seed: int, scale
                 break
             colour = accent if share > 0.86 else foreground
             alpha = (120 if share > 0.86 else 26 + 90 * share)
-            draw.ellipse((x - radius, y - radius, x + radius, y + radius), fill=_rgba(colour, alpha))
+            draw.ellipse((x - radius, y - radius, x + radius, y + radius), fill=rgba(colour, alpha))
 
 
 def none(draw, box: Box, *, accent: Colour, foreground: Colour, seed: int, scale: float) -> None:
