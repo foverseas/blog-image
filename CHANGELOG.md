@@ -3,6 +3,40 @@
 Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 versionnage [SemVer](https://semver.org/lang/fr/).
 
+## [0.2.0] - 2026-10-25
+
+### Ajouté
+
+- `SpecError` et `FontError` s'importent depuis `blog_image` directement, et
+  restent exposées par `blog_image.fonts` et `blog_image.spec` : on ne peut pas
+  utiliser `resolve_fonts` ou `load_spec` en bibliothèque sans pouvoir les
+  rattraper.
+
+### Corrigé
+
+- Un chapeau long ne sort plus de la marge droite : il n'était borné par
+  aucune mesure et se faisait couper par le bord de l'image. Son corps
+  rétrécit maintenant jusqu'à un plancher de lisibilité, puis le texte est
+  coupé sur une ellipse. Un chapeau qui tenait déjà rend le même fichier,
+  octet pour octet.
+- Le point d'accent du titre entre dans la mesure : dessiné après la dernière
+  ligne sans être compté par l'ajustement, il pouvait mordre dans la marge
+  droite quand la ligne frôlait la largeur utile.
+- Un chapeau écrit en liste YAML se plie en une seule ligne au lieu de
+  mesurer et dessiner le saut de ligne comme un caractère de chasse
+  imprévisible.
+
+### Modifié
+
+- Le paquet passe en disposition `src/`, et chaque responsabilité devient un
+  module : `spec/` lit la description, `fonts/` résout les polices, `draw/`
+  dessine la carte, `schema/` ne porte que les types et `errors.py` les deux
+  erreurs que la CLI rattrape. L'API du premier niveau et les fichiers
+  produits ne changent pas ; les chemins profonds bougent (`blog_image.config`
+  devient `blog_image.spec`). Une copie de travail déjà installée demande un
+  `uv sync`, le chemin du paquet ayant bougé.
+- 86 tests au lieu de 29 : la CLI, les polices et les motifs en avaient zéro.
+
 ## [0.1.0] - 2026-10-24
 
 Première version.
@@ -39,4 +73,5 @@ Première version.
 - Publié sur PyPI : `uv tool install blog-image`, ou
   `uvx --from blog-image blog-image image.yml` sans rien installer de permanent.
 
+[0.2.0]: https://github.com/foverseas/blog-image/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/foverseas/blog-image/releases/tag/v0.1.0

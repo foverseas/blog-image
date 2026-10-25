@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import argparse
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 from . import __version__
-from .config import SpecError, load_spec, parse_format, slugify
-from .fonts import FontError, resolve_fonts
-from .render import render
+from .draw import render
+from .errors import FontError, SpecError
+from .fonts import resolve_fonts
+from .spec import load_spec, parse_format, slugify
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -40,11 +42,11 @@ def main(argv: list[str] | None = None) -> int:
     try:
         spec = load_spec(args.spec)
         if args.formats:
-            spec.formats = tuple(parse_format(token) for token in args.formats)
+            spec = replace(spec, formats=tuple(parse_format(token) for token in args.formats))
         if args.out is not None:
-            spec.out = args.out
+            spec = replace(spec, out=args.out)
         if args.name:
-            spec.name = slugify(args.name)
+            spec = replace(spec, name=slugify(args.name))
         fonts = None if args.dry_run else resolve_fonts(spec.font)
     except (SpecError, FontError) as error:
         print(f"blog-image: {error}", file=sys.stderr)

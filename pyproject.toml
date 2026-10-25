@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "blog-image"
-version = "0.1.0"
+version = "0.2.0"
 description = "Generate article cover images in several aspect ratios from a short YAML file."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -34,7 +34,7 @@ Discord = "https://discord.gg/FS2xqJ4QT6"
 blog-image = "blog_image.cli:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["blog_image"]
+packages = ["src/blog_image"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
