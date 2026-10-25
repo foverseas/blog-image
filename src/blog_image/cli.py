@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 from . import __version__
@@ -41,11 +42,11 @@ def main(argv: list[str] | None = None) -> int:
     try:
         spec = load_spec(args.spec)
         if args.formats:
-            spec.formats = tuple(parse_format(token) for token in args.formats)
+            spec = replace(spec, formats=tuple(parse_format(token) for token in args.formats))
         if args.out is not None:
-            spec.out = args.out
+            spec = replace(spec, out=args.out)
         if args.name:
-            spec.name = slugify(args.name)
+            spec = replace(spec, name=slugify(args.name))
         fonts = None if args.dry_run else resolve_fonts(spec.font)
     except (SpecError, FontError) as error:
         print(f"blog-image: {error}", file=sys.stderr)

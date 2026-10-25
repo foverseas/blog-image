@@ -4,7 +4,7 @@ from pathlib import Path
 from .format import Format
 
 
-@dataclass
+@dataclass(frozen=True)
 class Spec:
     title: str
     subtitle: str = ""
