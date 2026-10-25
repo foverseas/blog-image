@@ -8,10 +8,10 @@ from dataclasses import replace
 from pathlib import Path
 
 from . import __version__
-from .config import load_spec, parse_format, slugify
 from .draw import render
 from .fonts import resolve_fonts
 from .schema import FontError, SpecError
+from .spec import load_spec, parse_format, slugify
 
 
 def build_parser() -> argparse.ArgumentParser:

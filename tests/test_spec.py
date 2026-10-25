@@ -1,6 +1,7 @@
 import pytest
 
-from blog_image.config import SpecError, parse_colour, parse_format, slugify, spec_from_mapping
+from blog_image.schema import SpecError
+from blog_image.spec import parse_colour, parse_format, slugify, spec_from_mapping
 
 
 def test_french_and_english_keys_are_equivalent():
