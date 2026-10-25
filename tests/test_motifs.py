@@ -1,7 +1,9 @@
+import inspect
+
 import pytest
 from PIL import Image, ImageDraw
 
-from blog_image.motifs import MOTIFS, draw_motif
+from blog_image.motifs import MOTIFS, Motif, draw_motif
 
 
 def _overlay(size=(400, 200)):
@@ -50,3 +52,11 @@ def test_marks_are_sized_from_scale_not_from_the_box():
 def test_an_unknown_motif_name_is_a_keyerror():
     with pytest.raises(KeyError):
         _draw("tartiflette")
+
+
+def test_every_registered_motif_matches_the_declared_protocol():
+    """Nothing type-checks this project, so the Protocol is enforced here instead."""
+    declared = inspect.signature(Motif.__call__)
+    expected = declared.replace(parameters=list(declared.parameters.values())[1:])
+    for name, motif in MOTIFS.items():
+        assert inspect.signature(motif) == expected, f"{name} ne respecte pas le contrat Motif"
