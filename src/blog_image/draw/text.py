@@ -35,6 +35,21 @@ def wrap(text: str, font: ImageFont.FreeTypeFont, max_width: float) -> list[str]
     return lines
 
 
+# One step of the size search: small enough to stop near the largest size
+# that fits, large enough to finish in a handful of measurements.
+SHRINK = 0.94
+
+
+def shrink_to_fit(loader, size: int, floor: int, fits) -> ImageFont.FreeTypeFont:
+    """Walk the size down by SHRINK steps until `fits(font)`, or return the floor."""
+    size = max(size, floor)
+    while True:
+        font = loader(size)
+        if fits(font) or size <= floor:
+            return font
+        size = max(floor, int(size * SHRINK))
+
+
 def fit(text: str, loader, size: int, max_width: float, max_lines: int, floor: int):
     """Shrink until the text fits in `max_lines` of `max_width`, or hits the floor.
 
@@ -42,16 +57,20 @@ def fit(text: str, loader, size: int, max_width: float, max_lines: int, floor: i
     the line wraps to one line and would otherwise never trigger a shrink, so a
     long compound or a URL in a title would run off the card.
     """
-    size = max(size, floor)
-    while True:
-        font = loader(size)
+
+    def lines_at(font) -> list[str]:
         lines: list[str] = []
         for paragraph in text.split("\n"):
             lines.extend(wrap(paragraph, font, max_width) or [""])
+        return lines
+
+    def fits(font) -> bool:
+        lines = lines_at(font)
         widest = max((font.getlength(line) for line in lines), default=0.0)
-        if (len(lines) <= max_lines and widest <= max_width) or size <= floor:
-            return font, lines, size
-        size = max(floor, int(size * 0.94))
+        return len(lines) <= max_lines and widest <= max_width
+
+    font = shrink_to_fit(loader, size, floor, fits)
+    return font, lines_at(font), font.size
 
 
 def tracked_width(text: str, font: ImageFont.FreeTypeFont, tracking: float) -> float:
@@ -66,12 +85,11 @@ def fit_tracked(text: str, loader, size: int, max_width: float, tracking: float,
     is a fraction of the font size, it shrinks along with the face -- so the
     width has to be measured again at each step rather than scaled.
     """
-    size = max(size, floor)
-    while True:
-        font = loader(size)
-        if tracked_width(text, font, font.size * tracking) <= max_width or size <= floor:
-            return font
-        size = max(floor, int(size * 0.94))
+
+    def fits(font) -> bool:
+        return tracked_width(text, font, font.size * tracking) <= max_width
+
+    return shrink_to_fit(loader, size, floor, fits)
 
 
 def draw_tracked(draw, xy, text: str, font, fill, tracking: float) -> None:
