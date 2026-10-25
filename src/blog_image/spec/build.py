@@ -31,7 +31,7 @@ def spec_from_mapping(raw: dict, base: Path | None = None) -> Spec:
             raise SpecError(f"unknown key '{key}' (known keys: {known})")
         data[canonical] = value
 
-    title = as_text(data.get("title"), "title").strip()
+    title = as_text(data.get("title")).strip()
     if not title:
         raise SpecError("`titre` (or `title`) is required and must not be empty")
 
@@ -55,10 +55,10 @@ def spec_from_mapping(raw: dict, base: Path | None = None) -> Spec:
 
     return Spec(
         title=title,
-        subtitle=as_text(data.get("subtitle"), "subtitle").strip(),
+        subtitle=as_text(data.get("subtitle")).strip(),
         # The kicker is set as one tracked line: hard breaks fold to spaces.
-        eyebrow=as_text(data.get("eyebrow"), "eyebrow").replace("\n", " ").strip(),
-        footer=as_text(data.get("footer"), "footer").strip(),
+        eyebrow=as_text(data.get("eyebrow")).replace("\n", " ").strip(),
+        footer=as_text(data.get("footer")).strip(),
         background=parse_colour(data.get("background", "#1c1c22"), "fond"),
         foreground=parse_colour(data.get("foreground", "#ffffff"), "texte"),
         accent=parse_colour(data.get("accent", "#00ff99"), "accent"),

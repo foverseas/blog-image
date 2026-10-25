@@ -59,7 +59,7 @@ def slugify(text: str) -> str:
     return _SLUG.sub("-", folded.lower()).strip("-") or "article"
 
 
-def as_text(value: object, where: str) -> str:
+def as_text(value: object) -> str:
     """A list is joined with newlines, which the renderer honours as hard breaks."""
     if value is None:
         return ""
