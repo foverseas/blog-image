@@ -4,6 +4,7 @@ titre: "Combien coûte une application mobile"
 sous-titre: "Les décisions qui font varier le devis"
 pied: "f-overseassolutions.fr"
 
+thème: nuit             # nuit | papier | ardoise — les clés ci-dessous gagnent
 accent: "#00ff99"       # couleur d'accent
 fond: "#1c1c22"         # fond de la carte
 texte: "#ffffff"        # couleur du texte

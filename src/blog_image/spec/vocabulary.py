@@ -37,6 +37,7 @@ ALIASES = {
     "sortie": "out",
     "graine": "seed",
     "point": "dot",
+    "thème": "theme",
     "lignes-max": "max_lines",
     "lignes_max": "max_lines",
 }
@@ -56,7 +57,17 @@ FIELDS = {
     "out",
     "seed",
     "dot",
+    "theme",
     "max_lines",
+}
+
+# Named palettes. A theme fills `fond`, `texte` and `accent` at once; any of
+# the three written explicitly in the spec wins over it. `nuit` names the
+# defaults, so a spec can say its look out loud.
+THEMES: dict[str, dict[str, str]] = {
+    "nuit": {"background": "#1c1c22", "foreground": "#ffffff", "accent": "#00ff99"},
+    "papier": {"background": "#f4f1ea", "foreground": "#23211c", "accent": "#c2452d"},
+    "ardoise": {"background": "#26303b", "foreground": "#e9eef3", "accent": "#f0b429"},
 }
 
 MOTIF_ALIASES = {

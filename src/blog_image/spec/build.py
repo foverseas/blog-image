@@ -12,7 +12,7 @@ from pathlib import Path
 from ..errors import SpecError
 from ..schema import Spec
 from .parse import as_text, parse_colour, parse_format, slugify
-from .vocabulary import ALIASES, DEFAULT_FORMATS, FIELDS, MOTIF_ALIASES
+from .vocabulary import ALIASES, DEFAULT_FORMATS, FIELDS, MOTIF_ALIASES, THEMES
 
 # A title already ending in punctuation does not get the accent period.
 _CLOSED = re.compile(r"[?!.:…»\"']$")
@@ -30,6 +30,15 @@ def spec_from_mapping(raw: dict, base: Path | None = None) -> Spec:
             known = ", ".join(sorted(FIELDS | set(ALIASES)))
             raise SpecError(f"unknown key '{key}' (known keys: {known})")
         data[canonical] = value
+
+    theme = data.pop("theme", None)
+    if theme is not None:
+        wanted = str(theme).strip().lower()
+        if wanted not in THEMES:
+            raise SpecError(f"theme: '{wanted}' is not one of {', '.join(sorted(THEMES))}")
+        # A theme only fills the colours left unsaid: an explicit key wins.
+        for colour_key, value in THEMES[wanted].items():
+            data.setdefault(colour_key, value)
 
     title = as_text(data.get("title")).strip()
     if not title:

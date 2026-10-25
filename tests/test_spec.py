@@ -75,3 +75,26 @@ def test_a_list_eyebrow_folds_to_a_single_line():
     them, so the break folds to a space at build time."""
     spec = spec_from_mapping({"titre": "T", "chapeau": ["DEV", "MOBILE"], "sortie": "out"})
     assert spec.eyebrow == "DEV MOBILE"
+
+
+def test_a_theme_fills_the_three_colours_at_once():
+    spec = spec_from_mapping({"titre": "T", "thème": "papier"})
+    assert spec.background == (244, 241, 234)
+    assert spec.foreground == (35, 33, 28)
+    assert spec.accent == (194, 69, 45)
+
+
+def test_an_explicit_colour_wins_over_the_theme():
+    spec = spec_from_mapping({"titre": "T", "thème": "papier", "accent": "#123456"})
+    assert spec.accent == (0x12, 0x34, 0x56)
+    assert spec.background == (244, 241, 234)  # le reste du thème tient toujours
+
+
+def test_nuit_names_the_default_palette():
+    """The default look gets a name, so a spec can say it out loud."""
+    assert spec_from_mapping({"titre": "T", "thème": "nuit"}) == spec_from_mapping({"titre": "T"})
+
+
+def test_an_unknown_theme_is_an_error_listing_the_known_ones():
+    with pytest.raises(SpecError, match=r"ardoise.*nuit.*papier"):
+        spec_from_mapping({"titre": "T", "theme": "disco"})

@@ -66,6 +66,7 @@ Seul `titre` est obligatoire. Les clés s'écrivent en français ou en anglais.
 | `sous-titre` | `subtitle` | vide | une ligne sous le titre ; une liste devient autant de lignes |
 | `chapeau` | `eyebrow` | vide | surtitre en capitales espacées, dans la couleur d'accent |
 | `pied` | `footer` | vide | le pied de carte, précédé d'une pastille |
+| `thème` | `theme` | — | `nuit`, `papier` ou `ardoise` : remplit fond, texte et accent d'un coup |
 | `fond` | `background` | `#1c1c22` | fond de la carte |
 | `texte` | `foreground` | `#ffffff` | couleur du texte |
 | `accent` | — | `#00ff99` | pastille, surtitre, point final, motif |
@@ -78,7 +79,9 @@ Seul `titre` est obligatoire. Les clés s'écrivent en français ou en anglais.
 | `point` | `dot` | `true` | le point d'accent après le titre |
 | `lignes-max` | `max_lines` | `4` | au-delà, le titre rapetisse au lieu de déborder |
 
-Les couleurs s'écrivent `#rgb`, `#rrggbb` ou `[28, 28, 34]`. Une clé inconnue
+Les couleurs s'écrivent `#rgb`, `#rrggbb` ou `[28, 28, 34]`. Un `thème` ne
+remplit que les couleurs non dites : une clé explicite gagne toujours, et
+`nuit` nomme simplement la palette par défaut. Une clé inconnue
 est une erreur : une faute de frappe dans un nom de clé ne se voit sinon qu'une
 fois la carte terminée.
 
