@@ -65,7 +65,8 @@ def render(spec: Spec, fonts: FontSet, fmt: Format, path: Path) -> Path:
         y += font.size * 2.6
 
     title_font, title_lines, title_size = fit(
-        spec.title, fonts.bold, round(unit * TITLE), inner, spec.max_lines, round(unit * TITLE_FLOOR)
+        spec.title, fonts.bold, round(unit * TITLE), inner, spec.max_lines, round(unit * TITLE_FLOOR),
+        tail="." if spec.dot else "",
     )
     line_height = title_size * 1.26
     for index, line in enumerate(title_lines):

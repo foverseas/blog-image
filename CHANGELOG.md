@@ -19,6 +19,9 @@ versionnage [SemVer](https://semver.org/lang/fr/).
   rétrécit maintenant jusqu'à un plancher de lisibilité, puis le texte est
   coupé sur une ellipse. Un chapeau qui tenait déjà rend le même fichier,
   octet pour octet.
+- Le point d'accent du titre entre dans la mesure : dessiné après la dernière
+  ligne sans être compté par l'ajustement, il pouvait mordre dans la marge
+  droite quand la ligne frôlait la largeur utile.
 
 ### Modifié
 

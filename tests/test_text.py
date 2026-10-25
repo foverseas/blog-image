@@ -64,6 +64,16 @@ def test_tracked_width_accounts_for_the_gaps_between_glyphs():
     assert tracked_width("", font, 10.0) == 0.0
 
 
+def test_fit_reserves_room_for_the_tail():
+    """The accent dot is drawn after the last line; fit must measure it too."""
+    fonts = resolve_fonts(None)
+    bare = fonts.bold(60).getlength("MOBILE")
+    _, _, size = fit("MOBILE", fonts.bold, 60, bare + 1, 1, 10)
+    assert size == 60  # the word alone fits
+    _, _, size = fit("MOBILE", fonts.bold, 60, bare + 1, 1, 10, tail=".")
+    assert size < 60  # the word plus the dot does not
+
+
 def test_fit_tracked_leaves_a_label_that_already_fits_alone():
     """The guard must not change a card whose eyebrow was never too wide."""
     fonts = resolve_fonts(None)

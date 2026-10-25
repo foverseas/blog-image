@@ -50,12 +50,15 @@ def shrink_to_fit(loader, size: int, floor: int, fits) -> ImageFont.FreeTypeFont
         size = max(floor, int(size * SHRINK))
 
 
-def fit(text: str, loader, size: int, max_width: float, max_lines: int, floor: int):
+def fit(text: str, loader, size: int, max_width: float, max_lines: int, floor: int, tail: str = ""):
     """Shrink until the text fits in `max_lines` of `max_width`, or hits the floor.
 
     The width is checked as well as the line count: a single word longer than
     the line wraps to one line and would otherwise never trigger a shrink, so a
     long compound or a URL in a title would run off the card.
+
+    `tail` is drawn after the last line (the title's accent dot) but never
+    wrapped, so its advance is measured with that line here.
     """
 
     def lines_at(font) -> list[str]:
@@ -67,7 +70,9 @@ def fit(text: str, loader, size: int, max_width: float, max_lines: int, floor: i
     def fits(font) -> bool:
         lines = lines_at(font)
         widest = max((font.getlength(line) for line in lines), default=0.0)
-        return len(lines) <= max_lines and widest <= max_width
+        if len(lines) > max_lines or widest > max_width:
+            return False
+        return font.getlength(lines[-1]) + font.getlength(tail) <= max_width
 
     font = shrink_to_fit(loader, size, floor, fits)
     return font, lines_at(font), font.size
