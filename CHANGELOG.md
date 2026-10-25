@@ -10,6 +10,10 @@ versionnage [SemVer](https://semver.org/lang/fr/).
 - Thèmes de couleurs nommés : `thème: nuit | papier | ardoise` remplit
   `fond`, `texte` et `accent` d'un coup. Une clé explicite gagne toujours,
   et `nuit` nomme la palette par défaut.
+- La CLI accepte plusieurs fichiers de description en un appel
+  (`blog-image articles/*.yml`) : chaque spec est indépendant, une erreur
+  nomme son fichier sans arrêter le lot, et le code de sortie reste 2 si au
+  moins un a échoué.
 
 ## [0.2.0] - 2026-10-25
 

@@ -98,11 +98,13 @@ $ blog-image image.yml                      # formats du fichier
 $ blog-image image.yml -o public/blog       # ailleurs
 $ blog-image image.yml -f 16x9 -f 1200x628  # autres formats
 $ blog-image image.yml --dry-run            # ce qui serait écrit, sans écrire
+$ blog-image articles/*.yml                 # tout le blog d'un coup
 ```
 
-`-n/--name` remplace la base du nom de fichier, `-q/--quiet` coupe la sortie.
-Une erreur de description sort en code 2 avec un message en clair, pas une
-trace.
+`-n/--name` remplace la base du nom de fichier (un seul spec à la fois),
+`-q/--quiet` coupe la sortie. Une erreur de description sort en code 2 avec un
+message en clair, pas une trace ; dans un lot, le fichier fautif est nommé et
+les autres sont rendus quand même.
 
 ## Comme bibliothèque
 

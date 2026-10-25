@@ -97,3 +97,45 @@ def test_the_spec_directory_anchors_a_relative_output_path(tmp_path):
     spec = _spec(nested, "titre: T\nformats: [200x200]\nsortie: cartes\n")
     assert main([str(spec), "--quiet"]) == 0
     assert (nested / "cartes" / "article-200x200.png").is_file()
+
+
+def _two_specs(tmp_path):
+    a = tmp_path / "a.yml"
+    a.write_text("titre: Premier article\nnom: a\nformats: [200x200]\n", encoding="utf-8")
+    b = tmp_path / "b.yml"
+    b.write_text("titre: Second article\nnom: b\nformats: [200x200]\n", encoding="utf-8")
+    return a, b
+
+
+def test_several_specs_render_in_one_call(tmp_path):
+    a, b = _two_specs(tmp_path)
+    assert main([str(a), str(b), "--quiet"]) == 0
+    assert (tmp_path / "a-200x200.png").is_file()
+    assert (tmp_path / "b-200x200.png").is_file()
+
+
+def test_a_bad_spec_does_not_stop_the_batch(tmp_path, capsys):
+    """Each spec is independent: the batch reports the failure, renders the
+    rest, and exits 2 so a script still sees that something went wrong."""
+    a, b = _two_specs(tmp_path)
+    a.write_text("pied: sans-titre\n", encoding="utf-8")
+    assert main([str(a), str(b), "--quiet"]) == 2
+    err = capsys.readouterr().err
+    assert "a.yml" in err and "required" in err
+    assert (tmp_path / "b-200x200.png").is_file()
+
+
+def test_the_name_option_refuses_several_specs(tmp_path, capsys):
+    """One base name over two specs would write the same files twice."""
+    a, b = _two_specs(tmp_path)
+    assert main([str(a), str(b), "--name", "unique"]) == 2
+    assert "--name" in capsys.readouterr().err
+    assert list(tmp_path.glob("*.png")) == []
+
+
+def test_dry_run_covers_the_whole_batch(tmp_path, capsys):
+    a, b = _two_specs(tmp_path)
+    assert main([str(a), str(b), "--dry-run"]) == 0
+    out = capsys.readouterr().out
+    assert "a-200x200.png" in out and "b-200x200.png" in out
+    assert list(tmp_path.glob("*.png")) == []
