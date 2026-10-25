@@ -57,9 +57,9 @@ def render(spec: Spec, fonts: FontSet, fmt: Format, path: Path) -> Path:
     y = float(pad)
 
     if spec.eyebrow:
-        label = spec.eyebrow.upper()
-        font = fit_tracked(
-            label, fonts.bold, round(unit * EYEBROW), inner, EYEBROW_TRACKING, round(unit * EYEBROW_FLOOR)
+        font, label = fit_tracked(
+            spec.eyebrow.upper(), fonts.bold, round(unit * EYEBROW),
+            inner, EYEBROW_TRACKING, round(unit * EYEBROW_FLOOR),
         )
         draw_tracked(draw, (pad, y), label, font, rgba(spec.accent, 255), font.size * EYEBROW_TRACKING)
         y += font.size * 2.6

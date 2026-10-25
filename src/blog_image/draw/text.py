@@ -78,18 +78,27 @@ def tracked_width(text: str, font: ImageFont.FreeTypeFont, tracking: float) -> f
 
 
 def fit_tracked(text: str, loader, size: int, max_width: float, tracking: float, floor: int):
-    """Shrink a letter-spaced line until it fits `max_width`, or hits the floor.
+    """Shrink a letter-spaced line until it fits `max_width`; cut it at the floor.
 
     `fit` cannot do this job: it measures with `font.getlength`, which knows
     nothing of the tracking `draw_tracked` will add. And because the tracking
     is a fraction of the font size, it shrinks along with the face -- so the
     width has to be measured again at each step rather than scaled.
+
+    Returns the font and the text to draw. A label too long even at the floor
+    has no wrapping to fall back on, so it is cut on an ellipsis rather than
+    handed back wider than the box it was measured for.
     """
 
     def fits(font) -> bool:
         return tracked_width(text, font, font.size * tracking) <= max_width
 
-    return shrink_to_fit(loader, size, floor, fits)
+    font = shrink_to_fit(loader, size, floor, fits)
+    if not fits(font):
+        while text and tracked_width(text + "…", font, font.size * tracking) > max_width:
+            text = text[:-1].rstrip()
+        text += "…"
+    return font, text
 
 
 def draw_tracked(draw, xy, text: str, font, fill, tracking: float) -> None:

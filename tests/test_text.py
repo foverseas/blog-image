@@ -67,23 +67,37 @@ def test_tracked_width_accounts_for_the_gaps_between_glyphs():
 def test_fit_tracked_leaves_a_label_that_already_fits_alone():
     """The guard must not change a card whose eyebrow was never too wide."""
     fonts = resolve_fonts(None)
-    font = fit_tracked("MOBILE", fonts.bold, 60, 10_000, 0.22, 20)
+    font, label = fit_tracked("MOBILE", fonts.bold, 60, 10_000, 0.22, 20)
     assert font.size == 60
+    assert label == "MOBILE"
 
 
 def test_fit_tracked_shrinks_a_label_until_the_spacing_fits_too():
     fonts = resolve_fonts(None)
     label = "DEVELOPPEMENT MOBILE ET TRANSFORMATION NUMERIQUE"
     width = 900.0
-    font = fit_tracked(label, fonts.bold, 90, width, 0.22, 10)
+    font, kept = fit_tracked(label, fonts.bold, 90, width, 0.22, 10)
     assert font.size < 90
-    assert tracked_width(label, font, font.size * 0.22) <= width
+    assert kept == label
+    assert tracked_width(kept, font, font.size * 0.22) <= width
 
 
 def test_fit_tracked_stops_at_the_floor_rather_than_looping():
     fonts = resolve_fonts(None)
-    font = fit_tracked("INCASSABLEMENTLONGUEETIQUETTE", fonts.bold, 90, 5.0, 0.22, 12)
+    font, label = fit_tracked("INCASSABLEMENTLONGUEETIQUETTE", fonts.bold, 90, 5.0, 0.22, 12)
     assert font.size == 12
+    assert label == "…"
+
+
+def test_fit_tracked_cuts_on_an_ellipsis_below_the_floor():
+    """At the floor there is nothing left to shrink: the label is cut to fit."""
+    fonts = resolve_fonts(None)
+    label = "UNE ETIQUETTE VRAIMENT BEAUCOUP TROP LONGUE POUR LA CARTE"
+    width = fonts.bold(12).getlength(label) / 2
+    font, cut = fit_tracked(label, fonts.bold, 90, width, 0.22, 12)
+    assert font.size == 12
+    assert cut.endswith("…") and len(cut) < len(label)
+    assert tracked_width(cut, font, font.size * 0.22) <= width
 
 
 def test_fit_tracked_accounts_for_the_tracking_not_just_the_glyphs():
@@ -91,6 +105,6 @@ def test_fit_tracked_accounts_for_the_tracking_not_just_the_glyphs():
     fonts = resolve_fonts(None)
     label = "MOBILE"
     bare = fonts.bold(60).getlength(label)
-    # une largeur qui laisse passer les glyphes seuls mais pas leurs écarts
-    font = fit_tracked(label, fonts.bold, 60, bare + 1, 0.22, 10)
+    # a width the bare glyphs pass but their gaps do not
+    font, _ = fit_tracked(label, fonts.bold, 60, bare + 1, 0.22, 10)
     assert font.size < 60

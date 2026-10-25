@@ -40,9 +40,22 @@ def test_a_bare_title_renders_without_the_optional_parts(tmp_path):
     assert path.is_file()
 
 
+def right_margin_is_clean(mapping) -> bool:
+    """Render the spec and check that nothing was drawn in the right margin."""
+    spec = spec_from_mapping(mapping)
+    fmt = spec.formats[0]
+    path = render(spec, resolve_fonts(spec.font), fmt, spec.path_for(fmt))
+    with Image.open(path) as image:
+        rgb = image.convert("RGB")
+        pad = round(fmt.width * PAD)
+        margin = rgb.crop((fmt.width - pad, 0, fmt.width, fmt.height))
+        plain = Image.new("RGB", margin.size, rgb.getpixel((2, 2)))
+    return ImageChops.difference(margin, plain).getbbox() is None
+
+
 def test_a_long_eyebrow_stays_inside_the_margin(tmp_path):
     """The title and subtitle are bounded by fit(); the eyebrow once was not."""
-    spec = spec_from_mapping(
+    assert right_margin_is_clean(
         {
             "titre": "Un titre",
             "chapeau": "Développement mobile et transformation numérique des PME",
@@ -51,11 +64,16 @@ def test_a_long_eyebrow_stays_inside_the_margin(tmp_path):
             "sortie": str(tmp_path),
         }
     )
-    fmt = spec.formats[0]
-    path = render(spec, resolve_fonts(spec.font), fmt, spec.path_for(fmt))
-    with Image.open(path) as image:
-        rgb = image.convert("RGB")
-        pad = round(fmt.width * PAD)
-        margin = rgb.crop((fmt.width - pad, 0, fmt.width, fmt.height))
-        plain = Image.new("RGB", margin.size, rgb.getpixel((2, 2)))
-    assert ImageChops.difference(margin, plain).getbbox() is None
+
+
+def test_an_absurdly_long_eyebrow_is_cut_rather_than_clipped(tmp_path):
+    """Below the size floor there is no wrap to fall back on: the label is cut."""
+    assert right_margin_is_clean(
+        {
+            "titre": "Un titre",
+            "chapeau": "Développement mobile, transformation numérique, " * 5,
+            "motif": "aucun",
+            "formats": ["16x9"],
+            "sortie": str(tmp_path),
+        }
+    )

@@ -14,10 +14,11 @@ versionnage [SemVer](https://semver.org/lang/fr/).
 
 ### Corrigé
 
-- Un chapeau long ne sort plus de la marge droite : il était le seul texte de
-  la carte à n'être borné par aucune mesure et se faisait couper par le bord
-  de l'image. Un chapeau qui tenait déjà rend le même fichier, octet pour
-  octet.
+- Un chapeau long ne sort plus de la marge droite : il n'était borné par
+  aucune mesure et se faisait couper par le bord de l'image. Son corps
+  rétrécit maintenant jusqu'à un plancher de lisibilité, puis le texte est
+  coupé sur une ellipse. Un chapeau qui tenait déjà rend le même fichier,
+  octet pour octet.
 
 ### Modifié
 
