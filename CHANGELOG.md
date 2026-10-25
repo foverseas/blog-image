@@ -22,6 +22,9 @@ versionnage [SemVer](https://semver.org/lang/fr/).
 - Le point d'accent du titre entre dans la mesure : dessiné après la dernière
   ligne sans être compté par l'ajustement, il pouvait mordre dans la marge
   droite quand la ligne frôlait la largeur utile.
+- Un chapeau écrit en liste YAML se plie en une seule ligne au lieu de
+  mesurer et dessiner le saut de ligne comme un caractère de chasse
+  imprévisible.
 
 ### Modifié
 

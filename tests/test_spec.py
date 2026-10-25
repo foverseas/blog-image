@@ -68,3 +68,10 @@ def test_output_path_is_relative_to_the_spec_file(tmp_path):
     spec = spec_from_mapping({"titre": "T", "nom": "mon-article", "sortie": "out"}, base=tmp_path)
     fmt = spec.formats[0]
     assert spec.path_for(fmt) == tmp_path / "out" / "mon-article-16x9.png"
+
+
+def test_a_list_eyebrow_folds_to_a_single_line():
+    """as_text joins a list with hard breaks; the tracked kicker cannot honour
+    them, so the break folds to a space at build time."""
+    spec = spec_from_mapping({"titre": "T", "chapeau": ["DEV", "MOBILE"], "sortie": "out"})
+    assert spec.eyebrow == "DEV MOBILE"

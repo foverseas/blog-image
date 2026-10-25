@@ -77,3 +77,4 @@ def test_an_absurdly_long_eyebrow_is_cut_rather_than_clipped(tmp_path):
             "sortie": str(tmp_path),
         }
     )
+

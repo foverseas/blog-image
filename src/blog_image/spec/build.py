@@ -56,7 +56,8 @@ def spec_from_mapping(raw: dict, base: Path | None = None) -> Spec:
     return Spec(
         title=title,
         subtitle=as_text(data.get("subtitle"), "subtitle").strip(),
-        eyebrow=as_text(data.get("eyebrow"), "eyebrow").strip(),
+        # The kicker is set as one tracked line: hard breaks fold to spaces.
+        eyebrow=as_text(data.get("eyebrow"), "eyebrow").replace("\n", " ").strip(),
         footer=as_text(data.get("footer"), "footer").strip(),
         background=parse_colour(data.get("background", "#1c1c22"), "fond"),
         foreground=parse_colour(data.get("foreground", "#ffffff"), "texte"),
