@@ -16,9 +16,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-from .config import Format, Spec
-from .fonts import FontSet
 from .motifs import draw_motif
+from .schema import FontSet, Format, Spec
 
 SS = 3
 

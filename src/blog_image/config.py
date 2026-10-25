@@ -67,7 +67,7 @@ FIELDS = {
     "max_lines",
 }
 
-MOTIFS = {
+MOTIF_ALIASES = {
     "particules": "particles",
     "particles": "particles",
     "grille": "grid",
@@ -156,8 +156,8 @@ def spec_from_mapping(raw: dict, base: Path | None = None) -> Spec:
         raise SpecError("formats: expected a non-empty list such as [16x9, 4x3, 1x1]")
 
     motif_key = str(data.get("motif", "particles")).strip().lower()
-    if motif_key not in MOTIFS:
-        raise SpecError(f"motif: '{motif_key}' is not one of {', '.join(sorted(MOTIFS))}")
+    if motif_key not in MOTIF_ALIASES:
+        raise SpecError(f"motif: '{motif_key}' is not one of {', '.join(sorted(MOTIF_ALIASES))}")
 
     max_lines = int(data.get("max_lines", 4) or 4)
     if max_lines < 1:
@@ -176,7 +176,7 @@ def spec_from_mapping(raw: dict, base: Path | None = None) -> Spec:
         foreground=parse_colour(data.get("foreground", "#ffffff"), "texte"),
         accent=parse_colour(data.get("accent", "#00ff99"), "accent"),
         font=data.get("font"),
-        motif=MOTIFS[motif_key],
+        motif=MOTIF_ALIASES[motif_key],
         formats=tuple(parse_format(token) for token in formats),
         name=slugify(str(data["name"])) if data.get("name") else "article",
         out=out,

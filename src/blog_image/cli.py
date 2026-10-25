@@ -7,9 +7,10 @@ import sys
 from pathlib import Path
 
 from . import __version__
-from .config import SpecError, load_spec, parse_format, slugify
-from .fonts import FontError, resolve_fonts
+from .config import load_spec, parse_format, slugify
+from .fonts import resolve_fonts
 from .render import render
+from .schema import FontError, SpecError
 
 
 def build_parser() -> argparse.ArgumentParser:
