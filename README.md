@@ -70,7 +70,7 @@ Seul `titre` est obligatoire. Les clés s'écrivent en français ou en anglais.
 | `fond` | `background` | `#1c1c22` | fond de la carte |
 | `texte` | `foreground` | `#ffffff` | couleur du texte |
 | `accent` | — | `#00ff99` | pastille, surtitre, point final, motif |
-| `motif` | — | `particules` | `particules`, `grille` ou `aucun` |
+| `motif` | — | `particules` | `particules`, `grille`, `diagonales`, `trame`, `anneaux` ou `aucun` |
 | `graine` | `seed` | `0` | change la disposition du motif sans rien toucher d'autre |
 | `police` | `font` | JetBrains Mono | nom de famille, gabarit de chemin contenant `%s`, ou `{regular:, bold:}` |
 | `formats` | — | `[16x9, 4x3, 1x1]` | ratios connus ou tailles explicites en pixels |

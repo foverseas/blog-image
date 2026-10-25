@@ -11,20 +11,30 @@ depends on the box.
 from __future__ import annotations
 
 from ..colour import Box, Colour
+from .diagonals import diagonals
 from .grid import grid
+from .halftone import halftone
 from .particles import particles
 from .protocol import Motif
+from .rings import rings
 
 
 def none(draw, box: Box, *, accent: Colour, foreground: Colour, seed: int, scale: float) -> None:
     """Leave the band empty."""
 
 
-MOTIFS: dict[str, Motif] = {"particles": particles, "grid": grid, "none": none}
+MOTIFS: dict[str, Motif] = {
+    "particles": particles,
+    "grid": grid,
+    "diagonals": diagonals,
+    "halftone": halftone,
+    "rings": rings,
+    "none": none,
+}
 
 
 def draw_motif(name: str, draw, box: Box, *, accent: Colour, foreground: Colour, seed: int, scale: float) -> None:
     MOTIFS[name](draw, box, accent=accent, foreground=foreground, seed=seed, scale=scale)
 
 
-__all__ = ["MOTIFS", "Motif", "draw_motif", "grid", "none", "particles"]
+__all__ = ["MOTIFS", "Motif", "diagonals", "draw_motif", "grid", "halftone", "none", "particles", "rings"]

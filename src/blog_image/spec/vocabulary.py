@@ -75,6 +75,12 @@ MOTIF_ALIASES = {
     "particles": "particles",
     "grille": "grid",
     "grid": "grid",
+    "diagonales": "diagonals",
+    "diagonals": "diagonals",
+    "trame": "halftone",
+    "halftone": "halftone",
+    "anneaux": "rings",
+    "rings": "rings",
     "aucun": "none",
     "none": "none",
 }

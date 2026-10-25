@@ -14,6 +14,9 @@ versionnage [SemVer](https://semver.org/lang/fr/).
   (`blog-image articles/*.yml`) : chaque spec est indépendant, une erreur
   nomme son fichier sans arrêter le lot, et le code de sortie reste 2 si au
   moins un a échoué.
+- Trois motifs : `diagonales` (hachures fines gagnant de l'encre vers la
+  droite), `trame` (points croissants en demi-teinte d'imprimeur) et
+  `anneaux` (arcs concentriques en éventail depuis le coin bas-droit).
 
 ## [0.2.0] - 2026-10-25
 

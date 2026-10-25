@@ -9,7 +9,7 @@ accent: "#00ff99"       # couleur d'accent
 fond: "#1c1c22"         # fond de la carte
 texte: "#ffffff"        # couleur du texte
 
-motif: particules       # particules | grille | aucun
+motif: particules       # particules | grille | diagonales | trame | anneaux | aucun
 graine: 7               # change la disposition du motif
 police: "JetBrains Mono"
 
