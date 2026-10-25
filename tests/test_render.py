@@ -1,6 +1,7 @@
-from PIL import Image
+from PIL import Image, ImageChops
 
 from blog_image.draw import render
+from blog_image.draw.render import PAD
 from blog_image.fonts import resolve_fonts
 from blog_image.spec import spec_from_mapping
 
@@ -37,3 +38,24 @@ def test_a_bare_title_renders_without_the_optional_parts(tmp_path):
     spec = spec_from_mapping({"titre": "Un titre seul", "formats": ["16x9"], "sortie": str(tmp_path)})
     path = render(spec, resolve_fonts(spec.font), spec.formats[0], spec.path_for(spec.formats[0]))
     assert path.is_file()
+
+
+def test_a_long_eyebrow_stays_inside_the_margin(tmp_path):
+    """The title and subtitle are bounded by fit(); the eyebrow once was not."""
+    spec = spec_from_mapping(
+        {
+            "titre": "Un titre",
+            "chapeau": "Développement mobile et transformation numérique des PME",
+            "motif": "aucun",
+            "formats": ["16x9"],
+            "sortie": str(tmp_path),
+        }
+    )
+    fmt = spec.formats[0]
+    path = render(spec, resolve_fonts(spec.font), fmt, spec.path_for(fmt))
+    with Image.open(path) as image:
+        rgb = image.convert("RGB")
+        pad = round(fmt.width * PAD)
+        margin = rgb.crop((fmt.width - pad, 0, fmt.width, fmt.height))
+        plain = Image.new("RGB", margin.size, rgb.getpixel((2, 2)))
+    assert ImageChops.difference(margin, plain).getbbox() is None

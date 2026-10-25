@@ -19,7 +19,7 @@ from ..fonts import FontSet
 from ..schema import Format, Spec
 from .colour import rgba
 from .motifs import draw_motif
-from .text import draw_tracked, fit
+from .text import draw_tracked, fit, fit_tracked
 
 SS = 3
 
@@ -27,12 +27,17 @@ SS = 3
 # nothing else.
 PAD = 0.075
 EYEBROW = 0.021
+EYEBROW_FLOOR = 0.013
 TITLE = 0.055
 TITLE_FLOOR = 0.028
 SUBTITLE = 0.026
 SUBTITLE_FLOOR = 0.016
 FOOTER = 0.019
 GAP = 0.028
+
+# Letter spacing on the eyebrow, as a fraction of its own font size rather
+# than of `unit`: it has to shrink with the face it spaces out.
+EYEBROW_TRACKING = 0.22
 
 # Below this the band is a smear rather than a field, so the motif is dropped.
 MIN_BAND = 0.035
@@ -52,8 +57,11 @@ def render(spec: Spec, fonts: FontSet, fmt: Format, path: Path) -> Path:
     y = float(pad)
 
     if spec.eyebrow:
-        font = fonts.bold(round(unit * EYEBROW))
-        draw_tracked(draw, (pad, y), spec.eyebrow.upper(), font, rgba(spec.accent, 255), font.size * 0.22)
+        label = spec.eyebrow.upper()
+        font = fit_tracked(
+            label, fonts.bold, round(unit * EYEBROW), inner, EYEBROW_TRACKING, round(unit * EYEBROW_FLOOR)
+        )
+        draw_tracked(draw, (pad, y), label, font, rgba(spec.accent, 255), font.size * EYEBROW_TRACKING)
         y += font.size * 2.6
 
     title_font, title_lines, title_size = fit(

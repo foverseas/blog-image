@@ -1,6 +1,6 @@
 from PIL import ImageFont
 
-from blog_image.draw.text import fit, tracked_width, wrap
+from blog_image.draw.text import fit, fit_tracked, tracked_width, wrap
 from blog_image.fonts import resolve_fonts
 
 
@@ -62,3 +62,35 @@ def test_tracked_width_accounts_for_the_gaps_between_glyphs():
     assert tracked_width("ab", font, 10.0) == font.getlength("a") + font.getlength("b") + 10.0
     assert tracked_width("a", font, 10.0) == font.getlength("a")
     assert tracked_width("", font, 10.0) == 0.0
+
+
+def test_fit_tracked_leaves_a_label_that_already_fits_alone():
+    """The guard must not change a card whose eyebrow was never too wide."""
+    fonts = resolve_fonts(None)
+    font = fit_tracked("MOBILE", fonts.bold, 60, 10_000, 0.22, 20)
+    assert font.size == 60
+
+
+def test_fit_tracked_shrinks_a_label_until_the_spacing_fits_too():
+    fonts = resolve_fonts(None)
+    label = "DEVELOPPEMENT MOBILE ET TRANSFORMATION NUMERIQUE"
+    width = 900.0
+    font = fit_tracked(label, fonts.bold, 90, width, 0.22, 10)
+    assert font.size < 90
+    assert tracked_width(label, font, font.size * 0.22) <= width
+
+
+def test_fit_tracked_stops_at_the_floor_rather_than_looping():
+    fonts = resolve_fonts(None)
+    font = fit_tracked("INCASSABLEMENTLONGUEETIQUETTE", fonts.bold, 90, 5.0, 0.22, 12)
+    assert font.size == 12
+
+
+def test_fit_tracked_accounts_for_the_tracking_not_just_the_glyphs():
+    """A label that fits ungapped can still overflow once letter-spaced."""
+    fonts = resolve_fonts(None)
+    label = "MOBILE"
+    bare = fonts.bold(60).getlength(label)
+    # une largeur qui laisse passer les glyphes seuls mais pas leurs écarts
+    font = fit_tracked(label, fonts.bold, 60, bare + 1, 0.22, 10)
+    assert font.size < 60

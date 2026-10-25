@@ -58,6 +58,22 @@ def tracked_width(text: str, font: ImageFont.FreeTypeFont, tracking: float) -> f
     return sum(font.getlength(char) for char in text) + tracking * max(0, len(text) - 1)
 
 
+def fit_tracked(text: str, loader, size: int, max_width: float, tracking: float, floor: int):
+    """Shrink a letter-spaced line until it fits `max_width`, or hits the floor.
+
+    `fit` cannot do this job: it measures with `font.getlength`, which knows
+    nothing of the tracking `draw_tracked` will add. And because the tracking
+    is a fraction of the font size, it shrinks along with the face -- so the
+    width has to be measured again at each step rather than scaled.
+    """
+    size = max(size, floor)
+    while True:
+        font = loader(size)
+        if tracked_width(text, font, font.size * tracking) <= max_width or size <= floor:
+            return font
+        size = max(floor, int(size * 0.94))
+
+
 def draw_tracked(draw, xy, text: str, font, fill, tracking: float) -> None:
     """Letter-spaced text; Pillow has no tracking of its own."""
     x, y = xy
