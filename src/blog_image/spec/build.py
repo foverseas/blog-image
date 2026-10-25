@@ -9,7 +9,8 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from ..schema import Spec, SpecError
+from ..errors import SpecError
+from ..schema import Spec
 from .parse import as_text, parse_colour, parse_format, slugify
 from .vocabulary import ALIASES, DEFAULT_FORMATS, FIELDS, MOTIF_ALIASES
 

@@ -15,7 +15,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
-from ..schema import FontSet, Format, Spec
+from ..fonts import FontSet
+from ..schema import Format, Spec
 from .colour import rgba
 from .motifs import draw_motif
 from .text import draw_tracked, fit

@@ -1,6 +1,6 @@
 import pytest
 
-from blog_image.schema import SpecError
+from blog_image.errors import SpecError
 from blog_image.spec import parse_colour, parse_format, slugify, spec_from_mapping
 
 

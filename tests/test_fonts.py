@@ -3,8 +3,8 @@ import shutil
 import pytest
 from PIL import ImageFont
 
+from blog_image.errors import FontError
 from blog_image.fonts import resolve_fonts, search_dirs
-from blog_image.schema import FontError
 
 
 @pytest.fixture

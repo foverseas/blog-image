@@ -9,8 +9,8 @@ from pathlib import Path
 
 from . import __version__
 from .draw import render
+from .errors import FontError, SpecError
 from .fonts import resolve_fonts
-from .schema import FontError, SpecError
 from .spec import load_spec, parse_format, slugify
 
 

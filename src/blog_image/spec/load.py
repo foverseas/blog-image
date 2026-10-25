@@ -6,7 +6,8 @@ from pathlib import Path
 
 import yaml
 
-from ..schema import Spec, SpecError
+from ..errors import SpecError
+from ..schema import Spec
 from .build import spec_from_mapping
 
 

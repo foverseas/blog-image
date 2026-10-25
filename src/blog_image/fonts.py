@@ -10,15 +10,42 @@ from __future__ import annotations
 
 import re
 import sys
+from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
 
-from .schema import FontError, FontSet
+from PIL import ImageFont
+
+from .errors import FontError
 
 _NORM = re.compile(r"[^a-z0-9]+")
 
 # Families tried, in order, when the spec says nothing.
 FALLBACKS = ("JetBrains Mono", "IBM Plex Mono", "DejaVu Sans Mono", "DejaVu Sans", "Arial")
+
+
+@dataclass
+class FontSet:
+    """Two faces plus a size cache: a card loads the same face at a dozen sizes."""
+
+    regular_path: Path
+    bold_path: Path
+    _cache: dict = field(default_factory=dict, repr=False)
+
+    def regular(self, size: int) -> ImageFont.FreeTypeFont:
+        return self._load(self.regular_path, size)
+
+    def bold(self, size: int) -> ImageFont.FreeTypeFont:
+        return self._load(self.bold_path, size)
+
+    def _load(self, path: Path, size: int) -> ImageFont.FreeTypeFont:
+        key = (path, max(1, int(size)))
+        font = self._cache.get(key)
+        if font is None:
+            font = ImageFont.truetype(str(path), key[1])
+            self._cache[key] = font
+        return font
+
 
 REGULAR_SUFFIXES = ("regular", "book", "")
 BOLD_SUFFIXES = ("bold", "semibold", "demibold", "medium")

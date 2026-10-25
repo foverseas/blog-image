@@ -10,7 +10,8 @@ from __future__ import annotations
 import re
 import unicodedata
 
-from ..schema import Format, SpecError
+from ..errors import SpecError
+from ..schema import Format
 from .vocabulary import PRESETS
 
 _SIZE = re.compile(r"^(\d+)\s*[xX*×]\s*(\d+)$")
