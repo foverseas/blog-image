@@ -4,6 +4,7 @@ import pytest
 from PIL import Image, ImageDraw
 
 from blog_image.draw.motifs import MOTIFS, Motif, draw_motif
+from blog_image.spec.vocabulary import MOTIF_ALIASES
 
 
 def _overlay(size=(400, 200)):
@@ -60,3 +61,11 @@ def test_every_registered_motif_matches_the_declared_protocol():
     expected = declared.replace(parameters=list(declared.parameters.values())[1:])
     for name, motif in MOTIFS.items():
         assert inspect.signature(motif) == expected, f"{name} ne respecte pas le contrat Motif"
+
+
+def test_the_vocabulary_names_exactly_the_registered_motifs():
+    """spec/ validates motif names that draw/ must then execute. The two lists
+    live in different packages on purpose -- spec/ never imports draw/ -- so
+    this is the only thing tying them together: a name validated but absent
+    from the registry would surface as a bare KeyError after validation."""
+    assert set(MOTIF_ALIASES.values()) == set(MOTIFS)
