@@ -19,7 +19,7 @@ def build_parser() -> argparse.ArgumentParser:
         prog="blog-image",
         description="Generate article cover images in several aspect ratios from a short YAML file.",
     )
-    parser.add_argument("spec", type=Path, help="YAML file describing the card")
+    parser.add_argument("spec", type=Path, nargs="+", help="YAML file(s), one card each")
     parser.add_argument("-o", "--out", type=Path, help="output directory (overrides `sortie`)")
     parser.add_argument(
         "-f",
@@ -39,8 +39,21 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
 
+    if args.name and len(args.spec) > 1:
+        print("blog-image: -n/--name names a single card; it cannot apply to several specs", file=sys.stderr)
+        return 2
+
+    # Each spec is independent: a failure is reported and the rest still
+    # renders, but the exit code remembers that something went wrong.
+    failed = False
+    for spec_path in args.spec:
+        failed |= not _run_one(spec_path, args)
+    return 2 if failed else 0
+
+
+def _run_one(spec_path: Path, args: argparse.Namespace) -> bool:
     try:
-        spec = load_spec(args.spec)
+        spec = load_spec(spec_path)
         if args.formats:
             spec = replace(spec, formats=tuple(parse_format(token) for token in args.formats))
         if args.out is not None:
@@ -49,8 +62,10 @@ def main(argv: list[str] | None = None) -> int:
             spec = replace(spec, name=slugify(args.name))
         fonts = None if args.dry_run else resolve_fonts(spec.font)
     except (SpecError, FontError) as error:
-        print(f"blog-image: {error}", file=sys.stderr)
-        return 2
+        # Name the file unless the message already does (load errors do).
+        where = "" if str(spec_path) in str(error) else f"{spec_path}: "
+        print(f"blog-image: {where}{error}", file=sys.stderr)
+        return False
 
     for fmt in spec.formats:
         path = spec.path_for(fmt)
@@ -60,4 +75,4 @@ def main(argv: list[str] | None = None) -> int:
             prefix = "would write" if args.dry_run else "->"
             print(f"  {prefix} {path}   {fmt.width}x{fmt.height}")
 
-    return 0
+    return True

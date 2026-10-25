@@ -23,7 +23,7 @@ def test_every_registered_motif_accepts_the_contract(name):
     assert _draw(name).mode == "RGBA"
 
 
-@pytest.mark.parametrize("name", ["particles", "grid"])
+@pytest.mark.parametrize("name", sorted(set(MOTIFS) - {"none"}))
 def test_a_motif_puts_marks_on_the_overlay(name):
     assert _draw(name).getbbox() is not None
 
@@ -33,7 +33,7 @@ def test_none_leaves_the_band_empty():
 
 
 @pytest.mark.parametrize("box", [(0.0, 0.0, 0.0, 0.0), (0.0, 0.0, -5.0, 200.0), (0.0, 0.0, 400.0, 0.0)])
-@pytest.mark.parametrize("name", ["particles", "grid"])
+@pytest.mark.parametrize("name", sorted(set(MOTIFS) - {"none"}))
 def test_a_degenerate_box_draws_nothing_rather_than_raising(name, box):
     assert _draw(name, box).getbbox() is None
 

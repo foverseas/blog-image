@@ -66,10 +66,11 @@ Seul `titre` est obligatoire. Les clés s'écrivent en français ou en anglais.
 | `sous-titre` | `subtitle` | vide | une ligne sous le titre ; une liste devient autant de lignes |
 | `chapeau` | `eyebrow` | vide | surtitre en capitales espacées, dans la couleur d'accent |
 | `pied` | `footer` | vide | le pied de carte, précédé d'une pastille |
+| `thème` | `theme` | — | `nuit`, `papier` ou `ardoise` : remplit fond, texte et accent d'un coup |
 | `fond` | `background` | `#1c1c22` | fond de la carte |
 | `texte` | `foreground` | `#ffffff` | couleur du texte |
 | `accent` | — | `#00ff99` | pastille, surtitre, point final, motif |
-| `motif` | — | `particules` | `particules`, `grille` ou `aucun` |
+| `motif` | — | `particules` | `particules`, `grille`, `diagonales`, `trame`, `anneaux` ou `aucun` |
 | `graine` | `seed` | `0` | change la disposition du motif sans rien toucher d'autre |
 | `police` | `font` | JetBrains Mono | nom de famille, gabarit de chemin contenant `%s`, ou `{regular:, bold:}` |
 | `formats` | — | `[16x9, 4x3, 1x1]` | ratios connus ou tailles explicites en pixels |
@@ -78,7 +79,9 @@ Seul `titre` est obligatoire. Les clés s'écrivent en français ou en anglais.
 | `point` | `dot` | `true` | le point d'accent après le titre |
 | `lignes-max` | `max_lines` | `4` | au-delà, le titre rapetisse au lieu de déborder |
 
-Les couleurs s'écrivent `#rgb`, `#rrggbb` ou `[28, 28, 34]`. Une clé inconnue
+Les couleurs s'écrivent `#rgb`, `#rrggbb` ou `[28, 28, 34]`. Un `thème` ne
+remplit que les couleurs non dites : une clé explicite gagne toujours, et
+`nuit` nomme simplement la palette par défaut. Une clé inconnue
 est une erreur : une faute de frappe dans un nom de clé ne se voit sinon qu'une
 fois la carte terminée.
 
@@ -95,11 +98,13 @@ $ blog-image image.yml                      # formats du fichier
 $ blog-image image.yml -o public/blog       # ailleurs
 $ blog-image image.yml -f 16x9 -f 1200x628  # autres formats
 $ blog-image image.yml --dry-run            # ce qui serait écrit, sans écrire
+$ blog-image articles/*.yml                 # tout le blog d'un coup
 ```
 
-`-n/--name` remplace la base du nom de fichier, `-q/--quiet` coupe la sortie.
-Une erreur de description sort en code 2 avec un message en clair, pas une
-trace.
+`-n/--name` remplace la base du nom de fichier (un seul spec à la fois),
+`-q/--quiet` coupe la sortie. Une erreur de description sort en code 2 avec un
+message en clair, pas une trace ; dans un lot, le fichier fautif est nommé et
+les autres sont rendus quand même.
 
 ## Comme bibliothèque
 
