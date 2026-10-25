@@ -3,6 +3,25 @@
 Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 versionnage [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Corrigé
+
+- Un chapeau long ne sort plus de la marge droite : il était le seul texte de
+  la carte à n'être borné par aucune mesure et se faisait couper par le bord
+  de l'image. Un chapeau qui tenait déjà rend le même fichier, octet pour
+  octet.
+
+### Modifié
+
+- Le paquet passe en disposition `src/`, et chaque responsabilité devient un
+  module : `spec/` lit la description, `fonts/` résout les polices, `draw/`
+  dessine la carte, `schema/` ne porte que les types et `errors.py` les deux
+  erreurs que la CLI rattrape. L'API publique et les fichiers produits ne
+  changent pas. Une copie de travail déjà installée demande un `uv sync`,
+  le chemin du paquet ayant bougé.
+- 86 tests au lieu de 29 : la CLI, les polices et les motifs en avaient zéro.
+
 ## [0.1.0] - 2026-10-24
 
 Première version.
