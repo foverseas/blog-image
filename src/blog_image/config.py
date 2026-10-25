@@ -9,10 +9,11 @@ from __future__ import annotations
 
 import re
 import unicodedata
-from dataclasses import dataclass, field
 from pathlib import Path
 
 import yaml
+
+from .schema import Format, Spec, SpecError
 
 # Pixel sizes for the ratios people actually ask for. 16x9 covers Open Graph
 # and most blog headers, 4x3 the Google Discover slot, 1x1 the social avatar
@@ -79,45 +80,6 @@ _SIZE = re.compile(r"^(\d+)\s*[xX*×]\s*(\d+)$")
 _SLUG = re.compile(r"[^a-z0-9]+")
 # A title already ending in punctuation does not get the accent period.
 _CLOSED = re.compile(r"[?!.:…»\"']$")
-
-
-class SpecError(ValueError):
-    """The spec file is unusable; the message is meant for the user, not a trace."""
-
-
-@dataclass(frozen=True)
-class Format:
-    """One output size."""
-
-    key: str
-    width: int
-    height: int
-
-    @property
-    def ratio(self) -> float:
-        return self.height / self.width
-
-
-@dataclass
-class Spec:
-    title: str
-    subtitle: str = ""
-    eyebrow: str = ""
-    footer: str = ""
-    background: tuple[int, int, int] = (28, 28, 34)
-    foreground: tuple[int, int, int] = (255, 255, 255)
-    accent: tuple[int, int, int] = (0, 255, 153)
-    font: object = None
-    motif: str = "particles"
-    formats: tuple[Format, ...] = ()
-    name: str = "article"
-    out: Path = field(default_factory=lambda: Path("."))
-    seed: int = 0
-    dot: bool = True
-    max_lines: int = 4
-
-    def path_for(self, fmt: Format) -> Path:
-        return self.out / f"{self.name}-{fmt.key}.png"
 
 
 def parse_colour(value: object, where: str) -> tuple[int, int, int]:
