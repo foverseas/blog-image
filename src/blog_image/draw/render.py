@@ -15,9 +15,9 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+from ..schema import FontSet, Format, Spec
 from .colour import rgba
 from .motifs import draw_motif
-from .schema import FontSet, Format, Spec
 from .text import draw_tracked, fit
 
 SS = 3

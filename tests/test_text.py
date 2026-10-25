@@ -1,7 +1,7 @@
 from PIL import ImageFont
 
+from blog_image.draw.text import fit, tracked_width, wrap
 from blog_image.fonts import resolve_fonts
-from blog_image.text import fit, tracked_width, wrap
 
 
 def _font(size=40):

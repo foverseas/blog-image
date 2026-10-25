@@ -1,8 +1,8 @@
 from PIL import Image
 
 from blog_image.config import spec_from_mapping
+from blog_image.draw import render
 from blog_image.fonts import resolve_fonts
-from blog_image.render import render
 
 
 def test_render_writes_each_requested_size(tmp_path):

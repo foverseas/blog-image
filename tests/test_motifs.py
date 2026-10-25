@@ -3,7 +3,7 @@ import inspect
 import pytest
 from PIL import Image, ImageDraw
 
-from blog_image.motifs import MOTIFS, Motif, draw_motif
+from blog_image.draw.motifs import MOTIFS, Motif, draw_motif
 
 
 def _overlay(size=(400, 200)):

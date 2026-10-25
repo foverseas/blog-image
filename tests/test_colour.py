@@ -1,6 +1,6 @@
 import pytest
 
-from blog_image.colour import rgba
+from blog_image.draw.colour import rgba
 
 
 @pytest.mark.parametrize(
