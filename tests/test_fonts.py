@@ -80,3 +80,14 @@ def test_regular_and_bold_are_cached_apart(family):
 
 def test_a_size_of_zero_is_clamped_rather_than_refused(family):
     assert resolve_fonts(str(family)).regular(0).size == 1
+
+
+def test_the_errors_are_importable_where_a_caller_expects_them():
+    """0.1.0 exposed FontError on blog_image.fonts; the split must not orphan it."""
+    from blog_image import FontError as top_font_error
+    from blog_image import SpecError as top_spec_error
+    from blog_image.fonts import FontError as facade_font_error
+    from blog_image.spec import SpecError as facade_spec_error
+
+    assert facade_font_error is top_font_error is FontError
+    assert facade_spec_error is top_spec_error
